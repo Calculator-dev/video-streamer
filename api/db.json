@@ -1,0 +1,28 @@
+{
+  "streams": [
+    {
+      "streamName": "Stream One",
+      "streamDescription": "Stream One Description",
+      "id": "1",
+      "userId": "fjadklsč"
+    },
+    {
+      "streamName": "Stream Two",
+      "streamDescription": "Stream Two Description",
+      "id": "2",
+      "userId": "hfhfasjdfjf"
+    },
+    {
+      "streamName": "Stream Three",
+      "streamDescription": "Stream Three Description",
+      "id": "3",
+      "userId": "aasdfwqeqwe"
+    },
+    {
+      "streamName": "Stream Four",
+      "streamDescription": "Stream Four Desrcription",
+      "id": "4",
+      "userId": "asdfv8237478"
+    }
+  ]
+}
