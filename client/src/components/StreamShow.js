@@ -1,68 +1,45 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
+import flv from 'flv.js'
 import { connect } from 'react-redux'
 import { fetchStream } from '../actions'
-import flv from 'flv.js'
-import { Grid, Typography } from '@material-ui/core'
 
-class StreamShow extends Component {
-    constructor(props) {
-        super(props)
+const StreamShow = (props) => {
 
-        this.videoRef = React.createRef()
-    }
+    const videoRef = React.createRef();
+    let player;
 
-    componentDidMount() {
-        const { id } = this.props.match.params
-        this.props.fetchStream(id)
-        this.buildPlayer()
-    }
+    useEffect(() => {
+        const id = props.match.params.id;
+        props.fetchStream(id);
+        buildPlayer();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
-    componentDidUpdate() {
-        this.player.destroy()
-    }
-
-    componentWillUnmount() {
-        this.buildPlayer()
-    }
-
-    buildPlayer() {
-        if (this.player || !this.props.stream) {
-            return
+    const buildPlayer = () => {
+        if (player || !props.stream) {
+            return;
         }
-
-        const { id } = this.props.match.params
-        this.player = flv.createPlayer({
+        const id = props.match.params.id
+        player = flv.createPlayer({
             type: 'flv',
             url: `http://localhost:8000/live/${id}.flv`
         })
-        this.player.attachMediaElement(this.videoRef.current)
-        this.player.load()
+        player.attachMediaElement(videoRef.current)
+        player.load();
+
+    }
+    if (!props.stream) {
+        return <div>Loading...</div>
     }
 
-    render() {
-        if (!this.props.stream) {
-            return <div>Loading...</div>
-        }
+    return (
+        <div>
+            <video ref={videoRef} style={{ width: '100%' }} controls="true" />
+            <h1>{props.stream.streamName}</h1>
+            <h5>{props.stream.streamDescription}</h5>
+        </div>
+    )
 
-        const { streamName, streamDescription } = this.props.stream
-        return (
-            <Grid style={{ textAlign: "center" }}>
-                <Grid>
-                    <video
-                        ref={this.videoRef}
-                        style={{ width: '60%', height: "40%", position: "relative", top: "20px" }}
-                        controls={true}
-
-                    />
-                </Grid>
-                <br />
-                <Grid item >
-                    <Grid sm><Typography variant="button" style={{ fontSize: "30px" }}>{streamName}</Typography></Grid>
-                    <Grid sm><Typography variant="button" style={{ fontSize: "15px" }}>{streamDescription}</Typography></Grid>
-                </Grid>
-            </Grid >
-        )
-    }
 }
 
 const mapStateToProps = (state, ownProps) => {
@@ -71,4 +48,6 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps, { fetchStream })(StreamShow)
+export default connect(
+    mapStateToProps, { fetchStream }
+)(StreamShow)
