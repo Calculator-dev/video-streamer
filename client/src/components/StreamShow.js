@@ -34,7 +34,7 @@ const StreamShow = (props) => {
 
     return (
         <div>
-            <video ref={videoRef} style={{ width: '100%' }} controls="true" />
+            <video ref={videoRef} style={{ width: '100%' }} controls={true} />
             <h1>{props.stream.streamName}</h1>
             <h5>{props.stream.streamDescription}</h5>
         </div>
